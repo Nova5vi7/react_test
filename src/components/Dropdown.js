@@ -7,7 +7,7 @@ function Dropdown({ dropdownVisible, data }) {
       className="like-dropdown"
       style={{ display: dropdownVisible ? "block" : "none" }}
     >
-      {data.map((itm, ind) => {
+      {data.map((itm) => {
         return (
           <div className="like-dropdown__content-wrap" key={itm.id}>
             <div className="like-dropdown__content">

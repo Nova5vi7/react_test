@@ -26,34 +26,15 @@ function App() {
     setDropdownVisible(!dropdownVisible);
   };
 
-  // const arr = [];
-
-  // const handleLikeClick = (e) => {
-  //   arr.push(e.currentTarget.id);
-  //   console.log(arr);
-  //   setDataFilter(
-  //     data.filter((itm) => {
-  //       if (arr.includes(String(itm.id))) {
-  //         console.log(arr, itm);
-  //         return itm;
-  //       }
-  //     })
-  //   );
-  // };
-
   const arr = [];
 
   const handleLikeClick = (e) => {
-    console.log(e.currentTarget.id);
     arr.push(e.currentTarget.id);
-    console.log(arr);
-    data.filter((itm) => {
-      if (arr.includes(String(itm.id))) {
-        console.log(arr, itm);
-        setDataFilter([itm]);
-        return itm;
-      }
-    });
+    setDataFilter(
+      data.filter((itm) => {
+        return arr.includes(String(itm.id));
+      })
+    );
   };
 
   return (
@@ -98,7 +79,6 @@ function App() {
       />
 
       {data.map((itm) => {
-        // console.log(arr[ind]);
         return (
           <Route
             path={`/product${itm.id}`}

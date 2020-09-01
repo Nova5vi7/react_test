@@ -9,7 +9,7 @@ function Card({ products, likeClick }) {
     <div className="cards">
       <h1 className="cards__title">Products</h1>
       <div className="cards__wrap">
-        {products.map((itm, ind) => {
+        {products.map((itm) => {
           return (
             <div className="cards__card" key={itm.id}>
               <NavLink to={`/product${itm.id}`}>
