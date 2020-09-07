@@ -68,30 +68,47 @@ body {
   }
 }
 
+.btn-add-wrap {
+  margin-right: 20px;
+}
+
 .button-add {
   padding: 15px 52px;
   border: none;
   background-color: #6a40c5;
   border-radius: 40px;
   color: #ffffff;
-  margin-right: 20px;
   transition: all 0.3s ease;
 
   &:hover {
     background-color: #5b37a8;
   }
+
+  &.active {
+    background: #848484;
+  }
+}
+
+.button-add,
+.button-like__btn {
+  cursor: pointer;
 }
 
 .button-like {
-  width: 45px;
-  height: 45px;
-  border: none;
-  background-color: #c4c4c4;
-  border-radius: 40px;
-  font-size: 25px;
-  color: #ffffff;
-  transition: all 0.3s ease;
-  &:hover {
+  &__btn {
+    width: 45px;
+    height: 45px;
+    border: none;
+    background-color: #c4c4c4;
+    border-radius: 40px;
+    font-size: 25px;
+    color: #ffffff;
+    transition: all 0.3s ease;
+    &:hover {
+      background-color: red;
+    }
+  }
+  .active {
     background-color: red;
   }
 }
@@ -113,16 +130,20 @@ body {
   &__wrap {
     display: flex;
   }
+}
+
+.card {
+  margin-right: 30px;
+
+  &:last-child {
+    margin: 0;
+  }
 
   &__card {
     padding: 20px 25px 16px;
-    margin-right: 30px;
     background: #ffffff;
     box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 15px;
-    &:last-child {
-      margin-right: 0;
-    }
   }
 
   &__img {
@@ -147,6 +168,7 @@ body {
 
   &__discount {
     color: #808080;
+    text-decoration: line-through;
   }
 
   &__btn-wrap {
@@ -183,9 +205,15 @@ body {
   }
 
   &__price {
-    margin-bottom: 27px;
     font-size: 23px;
     color: red;
+    margin-right: 14px;
+  }
+
+  &__discount {
+    font-size: 23px;
+    color: #c4c4c4;
+    text-decoration: line-through;
   }
 
   &__descript {
@@ -197,6 +225,11 @@ body {
   &__nav {
     display: flex;
   }
+
+  &__price-wrap {
+    display: flex;
+    margin-bottom: 27px;
+  }
 }
 
 .like-dropdown {
@@ -207,7 +240,9 @@ body {
   box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.25);
   border-radius: 5px;
   padding: 15px 20px 8px;
+}
 
+.like-product {
   &__content {
     display: flex;
   }
@@ -218,6 +253,14 @@ body {
     margin-bottom: 12px;
     display: flex;
     justify-content: space-between;
+  }
+
+  &__content-name {
+    margin-bottom: 10px;
+  }
+
+  &__content-price {
+    color: red;
   }
 
   &__img {

@@ -1,39 +1,50 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
-import "../App.scss";
+import { NavLink, withRouter } from "react-router-dom";
+import "../styles/App.scss";
 import Button from "./Button";
 import Like from "./Like";
 
-function Card({ products, likeClick }) {
+function Card({
+  product,
+  likeClick,
+  likeProducts,
+  basketClick,
+  basketProducts,
+}) {
   return (
-    <div className="cards">
-      <h1 className="cards__title">Products</h1>
-      <div className="cards__wrap">
-        {products.map((itm) => {
-          return (
-            <div className="cards__card" key={itm.id}>
-              <NavLink to={`/product${itm.id}`}>
-                <img src={itm.img} className="cards__img" alt="product-img" />
-              </NavLink>
-              <h3 className="cards__name">{itm.name}</h3>
-              <div className="cards__price-wrap">
-                <p className="cards__price">
-                  {itm.discount ? itm.price * itm.discount : itm.price} $
-                </p>
-                <p className="cards__discount">
-                  {itm.discount ? `- ${itm.discount}` : null}
-                </p>
-              </div>
-              <div className="cards__btn-wrap">
-                <Button />
-                <Like id={itm.id} likeClick={likeClick} />
-              </div>
+    <div className="card">
+      {product.map((itm) => {
+        return (
+          <div className="card__card" key={itm.id}>
+            <NavLink to={`/product/${itm.id}`}>
+              <img src={itm.img} className="card__img" alt="product-img" />
+            </NavLink>
+            <h3 className="card__name">{itm.name}</h3>
+            <div className="card__price-wrap">
+              <p className="card__price">
+                {itm.discount ? itm.price * itm.discount : itm.price}$
+              </p>
+              <p className="card__discount">
+                {itm.discount ? `${itm.price}$` : null}
+              </p>
             </div>
-          );
-        })}
-      </div>
+            <div className="card__btn-wrap">
+              <Button
+                id={itm.id}
+                basketClick={basketClick}
+                basketProduct={basketProducts.includes(String(itm.id))}
+              />
+              <Like
+                id={itm.id}
+                likeClick={likeClick}
+                likeProduct={likeProducts.includes(String(itm.id))}
+              />
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
 
-export default Card;
+export default withRouter(Card);

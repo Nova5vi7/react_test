@@ -1,10 +1,16 @@
 import React from "react";
-import "../App.scss";
+import "../styles/App.scss";
 
-function Button() {
+function Button({ id, basketClick, basketProduct }) {
   return (
-    <div>
-      <button className="button-add">Add</button>
+    <div className="btn-add-wrap">
+      <button
+        className={basketProduct ? "button-add active" : "button-add"}
+        id={id}
+        onClick={basketClick}
+      >
+        {basketProduct ? "Remove" : "Add"}
+      </button>
     </div>
   );
 }

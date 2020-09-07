@@ -1,94 +1,148 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Route, NavLink } from "react-router-dom";
-import ellipse from "./image/ellipse.png";
-import "./App.scss";
-import Card from "./components/Card";
+import { BrowserRouter } from "react-router-dom";
+import "./styles/App.scss";
+import Cards from "./components/Cards";
 import Description from "./components/Description";
-import Dropdown from "./components/Dropdown";
+import Header from "./components/Header";
+import featchData from "./helper/Featch-data";
+import Router from "./components/Router";
 
 function App() {
-  const [data, setData] = useState([]);
-  const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [dataFilter, setDataFilter] = useState([]);
+  const [dataProducts, setDataProducts] = useState([]);
+  const [dropdownLikeVisible, setDropdownLikeVisible] = useState(false);
+  const [dropdownBasketVisible, setDropdownBasketVisible] = useState(false);
+  const [dataLikeProducts] = useState([]);
+  const [dataBasketProducts] = useState([]);
+  const [dataLikeProductsFilter, setDataLikeProductsFilter] = useState([]);
+  const [dataBasketProductsFilter, setDataBasketProductsFilter] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(
-        "https://gist.githubusercontent.com/ytkonaft/73e288815f259f054e7108731418333d/raw/d4a6a692ecfa3a3afe29559e3677df57fc114414/test.json"
-      );
-      setData(result.data);
-    };
-    fetchData();
+    featchData(setDataProducts);
   }, []);
 
-  const handleDropdownClick = () => {
-    setDropdownVisible(!dropdownVisible);
+  const handleDropdownLikeClick = () => {
+    if (dataLikeProductsFilter.length !== 0) {
+      setDropdownLikeVisible(!dropdownLikeVisible);
+    } else {
+      setDropdownLikeVisible(false);
+    }
+    setDropdownBasketVisible(false);
   };
 
-  const arr = [];
+  const handleDropdownBasketClick = () => {
+    if (dataBasketProductsFilter.length !== 0) {
+      setDropdownBasketVisible(!dropdownBasketVisible);
+    } else {
+      setDropdownBasketVisible(false);
+    }
+    setDropdownLikeVisible(false);
+  };
 
   const handleLikeClick = (e) => {
-    arr.push(e.currentTarget.id);
-    setDataFilter(
-      data.filter((itm) => {
-        return arr.includes(String(itm.id));
-      })
+    if (!dataLikeProducts.includes(e.currentTarget.id)) {
+      dataLikeProducts.push(e.currentTarget.id);
+    } else {
+      dataLikeProducts.splice(dataLikeProducts.indexOf(e.currentTarget.id), 1);
+    }
+
+    const arrLikeFilter = dataProducts.filter((itm) => {
+      return dataLikeProducts.includes(String(itm.id));
+    });
+
+    if (arrLikeFilter.length === 0) {
+      setDropdownLikeVisible(false);
+    }
+
+    setDataLikeProductsFilter(arrLikeFilter);
+  };
+
+  const handleBasketClick = (e) => {
+    if (!dataBasketProducts.includes(e.currentTarget.id)) {
+      dataBasketProducts.push(e.currentTarget.id);
+    } else {
+      dataBasketProducts.splice(
+        dataBasketProducts.indexOf(e.currentTarget.id),
+        1
+      );
+    }
+
+    const arrBasketFilter = dataProducts.filter((itm) => {
+      return dataBasketProducts.includes(String(itm.id));
+    });
+
+    if (arrBasketFilter.length === 0) {
+      setDropdownBasketVisible(false);
+    }
+
+    setDataBasketProductsFilter(arrBasketFilter);
+  };
+
+  const handleLikeDelete = (e) => {
+    dataLikeProducts.splice(dataLikeProducts.indexOf(e.currentTarget.id), 1);
+    const arrRemoveLike = dataLikeProductsFilter.filter((itm) => {
+      return itm.id !== Number(e.currentTarget.id);
+    });
+    if (arrRemoveLike.length === 0) {
+      setDropdownLikeVisible(false);
+    }
+    setDataLikeProductsFilter(arrRemoveLike);
+  };
+
+  const handleBasketDelete = (e) => {
+    dataBasketProducts.splice(
+      dataBasketProducts.indexOf(e.currentTarget.id),
+      1
     );
+    const arrRemoveBasket = dataBasketProductsFilter.filter((itm) => {
+      return itm.id !== Number(e.currentTarget.id);
+    });
+    if (arrRemoveBasket.length === 0) {
+      setDropdownBasketVisible(false);
+    }
+    setDataBasketProductsFilter(arrRemoveBasket);
   };
 
   return (
-    <div>
-      <header className="header">
-        <div className="header__logo-wrap">
-          <div className="header__logo">
-            <img src={ellipse} alt="logo" />
-          </div>
-          <h3 className="header__logo-title">STUFF</h3>
-        </div>
-        <div>
-          <NavLink className="header__link-wrap" to="/products">
-            Products
-          </NavLink>
-        </div>
-        <div className="header__nav">
-          <div className="header__nav-wrap">
-            <button
-              className={
-                dropdownVisible
-                  ? "header__image-like active"
-                  : "header__image-like"
-              }
-              onClick={handleDropdownClick}
-            >
-              <i className="fa fa-heart-o"></i>
-            </button>
-            <Dropdown dropdownVisible={dropdownVisible} data={dataFilter} />
-          </div>
-          <div className="header__nav-wrap">
-            <button className="header__image-like">
-              <i className="fa fa-shopping-basket"></i>
-            </button>
-          </div>
-        </div>
-      </header>
-      <Route
-        path="/products"
-        exact
-        render={() => <Card products={data} likeClick={handleLikeClick} />}
+    <BrowserRouter>
+      <Header
+        dropdownLikeVisible={dropdownLikeVisible}
+        dropdownBasketVisible={dropdownBasketVisible}
+        handlDropdownLikeClick={handleDropdownLikeClick}
+        handleDropdownBasketClick={handleDropdownBasketClick}
+        dataLikeProductFilter={dataLikeProductsFilter}
+        dataBasketProductsFilter={dataBasketProductsFilter}
+        handleLikeDelete={handleLikeDelete}
+        handleBasketDelete={handleBasketDelete}
       />
 
-      {data.map((itm) => {
-        return (
-          <Route
-            path={`/product${itm.id}`}
-            exact
-            render={() => <Description products={[itm]} />}
-            key={itm.id}
+      <Router
+        path="/products"
+        render={({ ...props }) => (
+          <Cards
+            {...props}
+            products={dataProducts}
+            likeClick={handleLikeClick}
+            basketClick={handleBasketClick}
+            likeProducts={dataLikeProducts}
+            basketProducts={dataBasketProducts}
           />
-        );
-      })}
-    </div>
+        )}
+      />
+
+      <Router
+        path="/product/:id"
+        render={({ ...props }) => (
+          <Description
+            {...props}
+            products={dataProducts}
+            likeClick={handleLikeClick}
+            likeProducts={dataLikeProducts}
+            basketClick={handleBasketClick}
+            basketProducts={dataBasketProducts}
+          />
+        )}
+      />
+    </BrowserRouter>
   );
 }
 

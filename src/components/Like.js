@@ -1,10 +1,14 @@
 import React from "react";
-import "../App.scss";
+import "../styles/App.scss";
 
-function Like({ id, likeClick }) {
+function Like({ id, likeClick, likeProduct }) {
   return (
-    <div>
-      <button className="button-like" id={id} onClick={likeClick}>
+    <div className="button-like">
+      <button
+        className={likeProduct ? "button-like__btn active" : "button-like__btn"}
+        id={id}
+        onClick={likeClick}
+      >
         <i className="fa fa-heart-o"></i>
       </button>
     </div>
