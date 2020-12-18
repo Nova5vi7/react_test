@@ -1,14 +1,28 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import "../styles/App.scss";
 import ellipse from "../image/ellipse.png";
 import Dropdown from "./Dropdown";
 
+const LikeBtn = ({ onClick, icon }) => {
+  let className = "";
+  switch (icon) {
+    case "like":
+      className = "fa-heart-o";
+      break;
+    case "cart":
+      className = "fa-shopping-basket";
+      break;
+    default:
+      className = "fa-angellist";
+  }
+  return (
+    <button className="header__image-like" onClick={() => onClick(true)}>
+      <i className={`fa ${className}`} />
+    </button>
+  );
+};
+
 function Header({
-  dropdownLikeVisible,
-  dropdownBasketVisible,
-  handlDropdownLikeClick,
-  handleDropdownBasketClick,
   dataLikeProductFilter,
   dataBasketProductsFilter,
   handleLikeDelete,
@@ -27,37 +41,19 @@ function Header({
 
       <div className="header__nav">
         <div className="header__nav-wrap">
-          <button
-            className={
-              dropdownLikeVisible && dataLikeProductFilter.length !== 0
-                ? "header__image-like active"
-                : "header__image-like"
-            }
-            onClick={handlDropdownLikeClick}
-          >
-            <i className="fa fa-heart-o"></i>
-          </button>
           <Dropdown
-            dropdownVisible={dropdownLikeVisible}
             data={dataLikeProductFilter}
             productDelete={handleLikeDelete}
+            dropdownTrigger={LikeBtn}
+            icon="like"
           />
         </div>
         <div className="header__nav-wrap">
-          <button
-            className={
-              dropdownBasketVisible && dataBasketProductsFilter.length !== 0
-                ? "header__image-basket active"
-                : "header__image-basket"
-            }
-            onClick={handleDropdownBasketClick}
-          >
-            <i className="fa fa-shopping-basket"></i>
-          </button>
           <Dropdown
-            dropdownVisible={dropdownBasketVisible}
             data={dataBasketProductsFilter}
             productDelete={handleBasketDelete}
+            dropdownTrigger={LikeBtn}
+            icon="cart"
           />
         </div>
       </div>

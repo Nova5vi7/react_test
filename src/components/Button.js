@@ -1,5 +1,4 @@
 import React from "react";
-import "../styles/App.scss";
 
 function Button({ id, basketClick, basketProduct }) {
   return (
@@ -7,7 +6,7 @@ function Button({ id, basketClick, basketProduct }) {
       <button
         className={basketProduct ? "button-add active" : "button-add"}
         id={id}
-        onClick={basketClick}
+        onClick={() => basketClick()}
       >
         {basketProduct ? "Remove" : "Add"}
       </button>

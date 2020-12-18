@@ -1,8 +1,8 @@
 import axios from "axios";
-import { PRODUCT_DATA } from "../constant/common";
+import { PRODUCTS_URL } from "../constant/common";
 
 const fetchData = async (setData) => {
-  const result = await axios(PRODUCT_DATA);
+  const result = await axios(PRODUCTS_URL);
   setData(result.data);
 };
 

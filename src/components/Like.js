@@ -1,5 +1,4 @@
 import React from "react";
-import "../styles/App.scss";
 
 function Like({ id, likeClick, likeProduct }) {
   return (
@@ -7,7 +6,7 @@ function Like({ id, likeClick, likeProduct }) {
       <button
         className={likeProduct ? "button-like__btn active" : "button-like__btn"}
         id={id}
-        onClick={likeClick}
+        onClick={() => likeClick(id)}
       >
         <i className="fa fa-heart-o"></i>
       </button>
